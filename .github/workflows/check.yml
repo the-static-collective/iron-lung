@@ -13,3 +13,8 @@ jobs:
           node-version: 22
       - run: npm install
       - run: npm run check
+      - name: Verify deterministic first breath
+        run: |
+          npm run --silent first-breath > /tmp/iron-lung-breath-1.json
+          npm run --silent first-breath > /tmp/iron-lung-breath-2.json
+          cmp /tmp/iron-lung-breath-1.json /tmp/iron-lung-breath-2.json
