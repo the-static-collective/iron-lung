@@ -109,11 +109,31 @@ export function applyRepair(input: {
     findings.push(finding("repair_scope_violation", "repair descendant must have a fresh id", [input.ancestor.id]));
   }
 
-  if (findings.some((item) => item.code !== "lineage_erasure" && item.code !== "authority_escalation")) {
-    return { ok: false, findings: sortFindings(findings) };
+  let resultStrand: BraidStrand | undefined;
+  if ((STRAND_NAMES as readonly unknown[]).includes(observation.strand) && isRecord(observation.result)) {
+    const probe = {
+      schema: "iron-lung/braid/v0.1",
+      id: "braid:repair-result-probe",
+      strands: {
+        substance: structuredClone(input.ancestor.strands.substance),
+        lineage: structuredClone(input.ancestor.strands.lineage),
+        authority: structuredClone(input.ancestor.strands.authority),
+      },
+    };
+    (probe.strands as Record<StrandName, unknown>)[strand] = structuredClone(observation.result);
+    const resultValidation = validateBraid(probe);
+    if (!resultValidation.ok) {
+      findings.push(...resultValidation.findings.map((item) =>
+        finding("repair_scope_violation", `invalid repair result: ${item.detail}`, item.refs)
+      ));
+    } else {
+      resultStrand = resultValidation.value.strands[strand];
+    }
   }
 
-  const resultStrand = structuredClone(observation.result) as BraidStrand;
+  if (findings.length > 0 || !resultStrand) {
+    return { ok: false, findings: sortFindings(findings) };
+  }
 
   if (strand === "lineage") {
     const priorRefs = claimRefs(input.ancestor.strands.lineage);
