@@ -112,6 +112,19 @@ test("repair refuses identifier, selection, scope, output, witness, and lineage 
   }
 });
 
+test("malformed repair strand returns a domain finding instead of throwing", () => {
+  const malformed = observation() as any;
+  malformed.result = { condition: "intact" };
+  const result = applyRepair({
+    ancestor: ancestor(),
+    capability: capability(),
+    selection: selection(),
+    observation: malformed
+  });
+  assert.equal(result.ok, false);
+  assert.equal(result.findings.some((finding) => finding.code === "repair_scope_violation"), true);
+});
+
 test("authority repair requires explicit change reference carried in the resulting authority strand", () => {
   const authorityCapabilityResult = validateCapabilityRegistration({
     schema: "iron-lung/capability/v0.1",
