@@ -1,0 +1,135 @@
+{
+  "birthBraid": {
+    "schema": "iron-lung/braid/v0.1",
+    "id": "braid:iron-lung:birth:0",
+    "strands": {
+      "substance": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": ["repo:the-static-collective/iron-lung", "issue:iron-lung:1"]
+        }
+      },
+      "lineage": {
+        "condition": "broken",
+        "claim": {
+          "kind": "refs",
+          "refs": ["origin:conversation", "projection:continuity-spine"]
+        }
+      },
+      "authority": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": ["authority:human:design-approved:2026-08-19"]
+        }
+      }
+    }
+  },
+  "capabilities": [
+    {
+      "schema": "iron-lung/capability/v0.1",
+      "capabilityId": "capability:birth-lineage:project-backed",
+      "organId": "organ:project-backed-lineage",
+      "accepts": [{ "strand": "lineage", "conditions": ["broken"] }],
+      "requires": [
+        { "strand": "substance", "conditions": ["intact"] },
+        { "strand": "authority", "conditions": ["intact"] }
+      ],
+      "mayProduce": [{ "strand": "lineage", "conditions": ["intact"] }],
+      "authorityRef": "authority:capability:project-backed-lineage",
+      "witnessRefs": ["witness:capability:project-backed-lineage"]
+    },
+    {
+      "schema": "iron-lung/capability/v0.1",
+      "capabilityId": "capability:birth-lineage:conversation-only",
+      "organId": "organ:conversation-lineage",
+      "accepts": [{ "strand": "lineage", "conditions": ["broken"] }],
+      "requires": [
+        { "strand": "substance", "conditions": ["intact"] },
+        { "strand": "authority", "conditions": ["intact"] }
+      ],
+      "mayProduce": [{ "strand": "lineage", "conditions": ["strained"] }],
+      "authorityRef": "authority:capability:conversation-lineage",
+      "witnessRefs": ["witness:capability:conversation-lineage"]
+    }
+  ],
+  "admittedCapabilityIds": [
+    "capability:birth-lineage:project-backed",
+    "capability:birth-lineage:conversation-only"
+  ],
+  "spineProposal": {
+    "schema": "iron-lung/spine-proposal/v0.1",
+    "braidId": "braid:iron-lung:birth:0",
+    "status": "proposal",
+    "annotations": [
+      {
+        "routeId": "capability:birth-lineage:project-backed",
+        "rank": 1,
+        "note": "Preserves both conversation origin and project-backed lineage references."
+      },
+      {
+        "routeId": "capability:birth-lineage:conversation-only",
+        "rank": 2,
+        "note": "Retains conversation lineage but remains structurally strained."
+      }
+    ]
+  },
+  "selection": {
+    "schema": "iron-lung/present-route-selection/v0.1",
+    "braidId": "braid:iron-lung:birth:0",
+    "selectedRouteId": "capability:birth-lineage:project-backed",
+    "authorityRef": "authority:human:implementation-approved:2026-08-19",
+    "witnessRefs": ["witness:human:implementation-approved:2026-08-19"]
+  },
+  "repairObservation": {
+    "schema": "iron-lung/repair-observation/v0.1",
+    "repairId": "repair:iron-lung:birth-lineage:1",
+    "descendantId": "braid:iron-lung:birth:1",
+    "ancestorBraidId": "braid:iron-lung:birth:0",
+    "capabilityId": "capability:birth-lineage:project-backed",
+    "strand": "lineage",
+    "result": {
+      "condition": "intact",
+      "claim": {
+        "kind": "refs",
+        "refs": [
+          "origin:conversation",
+          "projection:continuity-spine",
+          "issue:iron-lung:1",
+          "commit:iron-lung:7c800c0536e4ae4ab61ba3cbbdb2930edcd796c7"
+        ]
+      }
+    },
+    "authorityRef": "authority:human:implementation-approved:2026-08-19",
+    "witnessRefs": ["witness:birth-lineage-repair:1"]
+  },
+  "assimilationPolicy": {
+    "schema": "iron-lung/assimilation-policy/v0.1",
+    "policyId": "policy:iron-lung:first-breath",
+    "acceptableConditions": {
+      "substance": ["intact"],
+      "lineage": ["intact"],
+      "authority": ["intact"]
+    },
+    "requiredWitnessRefs": [
+      "witness:human:implementation-approved:2026-08-19",
+      "witness:birth-lineage-repair:1"
+    ]
+  },
+  "assimilationWitnessRefs": [
+    "witness:human:implementation-approved:2026-08-19",
+    "witness:birth-lineage-repair:1"
+  ],
+  "pneuma": {
+    "schema": "iron-lung/pneuma/v0.1",
+    "braidId": "braid:iron-lung:birth:1",
+    "status": "interpretive",
+    "hypothesis": "Breath/spirit is an interpretive hypothesis about received possibility; no literal field depends on it.",
+    "questions": [
+      "What crossed the boundary?",
+      "What new possibility became available?",
+      "What remained continuous while the system became new?"
+    ]
+  }
+}
