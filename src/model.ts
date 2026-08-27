@@ -41,7 +41,9 @@ export type FindingCode =
   | "ancestor_mutation"
   | "assimilation_blocked"
   | "missing_witness"
-  | "invalid_pneuma_annotation";
+  | "invalid_pneuma_annotation"
+  | "invalid_successor"
+  | "duplicate_successor_event";
 
 export interface Finding {
   code: FindingCode;
