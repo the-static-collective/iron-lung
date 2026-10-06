@@ -18,3 +18,9 @@ jobs:
           npm run --silent first-breath > /tmp/iron-lung-breath-1.json
           npm run --silent first-breath > /tmp/iron-lung-breath-2.json
           cmp /tmp/iron-lung-breath-1.json /tmp/iron-lung-breath-2.json
+
+      - name: Verify deterministic HEART-001 combinatrix
+        run: |
+          npm run --silent heart-001 > /tmp/iron-lung-heart-1.json
+          npm run --silent heart-001 > /tmp/iron-lung-heart-2.json
+          cmp /tmp/iron-lung-heart-1.json /tmp/iron-lung-heart-2.json
