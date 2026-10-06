@@ -240,7 +240,7 @@ export function buildCombinatrixField(input: {
   });
 
   const canonicalSeen = seenCombinations.sort((a, b) => a.join("\u0000").localeCompare(b.join("\u0000")));
-  if (canonicalSeen.some((combo, index) => !arraysEqual(combo, expectedCombinations[index]))) {
+  if (canonicalSeen.some((combo, index) => !arraysEqual(combo, expectedCombinations[index]!))) {
     throw new Error("candidate policies do not exactly cover the bounded Cartesian product");
   }
 
