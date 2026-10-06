@@ -1,0 +1,166 @@
+{
+  "braid": {
+    "schema": "iron-lung/braid/v0.1",
+    "id": "braid:heart-001:B0",
+    "strands": {
+      "substance": {
+        "condition": "strained",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "artifact:heart-001",
+            "gap:substance:0"
+          ]
+        }
+      },
+      "lineage": {
+        "condition": "broken",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "origin:iron-lung",
+            "gap:lineage:0"
+          ]
+        }
+      },
+      "authority": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "authority:human:current-conversation:2026-10-06:heart-001-approved"
+          ]
+        }
+      }
+    }
+  },
+  "gaps": [
+    {
+      "gapId": "gap:substance:0",
+      "strand": "substance"
+    },
+    {
+      "gapId": "gap:lineage:0",
+      "strand": "lineage"
+    }
+  ],
+  "fragments": [
+    {
+      "fragmentId": "S1",
+      "gapId": "gap:substance:0",
+      "strand": "substance",
+      "result": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "artifact:heart-001",
+            "gap:substance:0",
+            "proposal:substance:S1"
+          ]
+        }
+      },
+      "provenanceRefs": [
+        "transducer:deterministic:substance:1"
+      ]
+    },
+    {
+      "fragmentId": "S2",
+      "gapId": "gap:substance:0",
+      "strand": "substance",
+      "result": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "artifact:heart-001",
+            "gap:substance:0",
+            "proposal:substance:S2"
+          ]
+        }
+      },
+      "provenanceRefs": [
+        "transducer:deterministic:substance:2"
+      ]
+    },
+    {
+      "fragmentId": "L1",
+      "gapId": "gap:lineage:0",
+      "strand": "lineage",
+      "result": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "origin:iron-lung",
+            "gap:lineage:0",
+            "proposal:lineage:L1"
+          ]
+        }
+      },
+      "provenanceRefs": [
+        "transducer:deterministic:lineage:1"
+      ]
+    },
+    {
+      "fragmentId": "L2",
+      "gapId": "gap:lineage:0",
+      "strand": "lineage",
+      "result": {
+        "condition": "intact",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "origin:iron-lung",
+            "gap:lineage:0",
+            "proposal:lineage:L2"
+          ]
+        }
+      },
+      "provenanceRefs": [
+        "transducer:deterministic:lineage:2"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "candidateId": "C1",
+      "fragmentIds": ["S1", "L1"],
+      "rank": 1,
+      "warrantRefs": ["warrant:W1"]
+    },
+    {
+      "candidateId": "C2",
+      "fragmentIds": ["S1", "L2"],
+      "rank": 2,
+      "warrantRefs": [],
+      "refusedBy": "rule:R2"
+    },
+    {
+      "candidateId": "C3",
+      "fragmentIds": ["S2", "L1"],
+      "rank": 3,
+      "warrantRefs": [],
+      "unresolvedBy": ["witness:H3"]
+    },
+    {
+      "candidateId": "C4",
+      "fragmentIds": ["S2", "L2"],
+      "rank": 4,
+      "warrantRefs": ["warrant:W4"]
+    }
+  ],
+  "selection": {
+    "schema": "iron-lung/present-route-selection/v0.1",
+    "braidId": "braid:heart-001:B0",
+    "selectedRouteId": "C4",
+    "authorityRef": "authority:human:current-conversation:2026-10-06:heart-001-approved",
+    "witnessRefs": [
+      "witness:human:current-conversation:2026-10-06:heart-001-approved"
+    ]
+  },
+  "warrantRefs": [
+    "warrant:W4"
+  ],
+  "descendantId": "braid:heart-001:B1"
+}
