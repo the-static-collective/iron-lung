@@ -7,7 +7,8 @@
     "check": "tsc --noEmit && node --test --import tsx test/*.test.ts",
     "first-breath": "tsx scripts/first-breath.ts",
     "heart-001": "tsx scripts/combinatrix-heart-001.ts",
-    "triple-transfer": "tsx scripts/triple-transfer.ts"
+    "triple-transfer": "tsx scripts/triple-transfer.ts",
+    "compass-lab": "tsx scripts/compass-lab.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",

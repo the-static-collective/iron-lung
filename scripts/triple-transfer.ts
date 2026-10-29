@@ -26,7 +26,7 @@ function args(argv:string[]){
  if(a.verify&&seen.size!==1)throw Error("HOLD_TRIPLE_CLI_VERIFY_ONLY");
  return a;
 }
-function flanProvider():{provider:TransferProvider;close:()=>void}{
+export function flanProvider():{provider:TransferProvider;close:()=>void}{
  const proc=spawn("python3",[join(ROOT,"model/flan-t5-bridge.py")],
   {cwd:ROOT,stdio:["pipe","pipe","pipe"],env:{...process.env,PYTHONUNBUFFERED:"1"}});
  let error="";
