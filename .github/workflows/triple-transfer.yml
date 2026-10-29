@@ -1,0 +1,75 @@
+name: IRON-LUNG Triple-T5-001 nested transfer and original FLAN
+on:
+  push:
+    branches: [experiment/triple-transfer-t5-001]
+  pull_request:
+    paths:
+      - src/triple-transfer.ts
+      - scripts/triple-transfer.ts
+      - model/**
+      - test/triple-transfer.test.ts
+      - package.json
+      - .github/workflows/triple-transfer.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  constitutional-fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Existing original Iron Lung + new bounded recursion tests
+        run: npm run check
+      - name: Genuine three nested passes, deterministic local replay and tamper rejection
+        run: |
+          npm run --silent triple-transfer -- --provider fixture --depth 3 > /tmp/iron-lung-3x3-a.json
+          npm run --silent triple-transfer -- --provider fixture --depth 3 > /tmp/iron-lung-3x3-b.json
+          cmp /tmp/iron-lung-3x3-a.json /tmp/iron-lung-3x3-b.json
+          npm run --silent triple-transfer -- --verify /tmp/iron-lung-3x3-a.json
+          node -e 'const x=require("/tmp/iron-lung-3x3-a.json");if(x.steps.length!==9||x.depth!==3||x.admittedCandidateId!==null||x.authority!=="NONE"||x.steps.some(s=>s.heartBeat||s.actualAuthority!=="NONE"))process.exit(2)'
+          cp /tmp/iron-lung-3x3-a.json /tmp/original-3x3.json
+          node -e 'const f=require("fs"),p="/tmp/iron-lung-3x3-a.json",j=JSON.parse(f.readFileSync(p));j.steps[8].candidateText="forged";f.writeFileSync(p,JSON.stringify(j))'
+          if npm run --silent triple-transfer -- --verify /tmp/iron-lung-3x3-a.json; then echo "FORGED_GENERATION_ACCEPTED"; exit 1; fi
+          cp /tmp/original-3x3.json /tmp/iron-lung-3x3-a.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: original-iron-lung-three-nested-fixture-proof
+          path: /tmp/iron-lung-3x3-a.json
+          if-no-files-found: error
+          retention-days: 30
+  flan-t5-cpu:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Install open-weight model CPU runtime
+        run: |
+          python -m pip install 'torch>=2.2,<3' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r model/requirements-triple.txt
+      - name: Actual original Google FLAN-T5 checkpoint makes nine nested proposals
+        run: |
+          npm run --silent triple-transfer -- --provider flan --depth 3 > /tmp/iron-lung-flan-3x3.json
+          npm run --silent triple-transfer -- --verify /tmp/iron-lung-flan-3x3.json
+          node -e 'const x=require("/tmp/iron-lung-flan-3x3.json");if(x.provider.kind!=="flan-t5"||x.provider.model!=="google/flan-t5-small"||x.steps.length!==9||x.status!=="LUNG_POSSIBILITY_ONLY"||x.descendantBraidId!==null||x.authority!=="NONE")process.exit(2)'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: original-google-flan-t5-nine-nested-candidates-held
+          path: /tmp/iron-lung-flan-3x3.json
+          if-no-files-found: error
+          retention-days: 30
