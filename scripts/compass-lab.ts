@@ -28,7 +28,7 @@ function parse(args:string[]){
  need((mode==="compare"||mode==="verify")&&rest.length%2===0,"USAGE");
  const o:Record<string,string>={};
  for(let i=0;i<rest.length;i+=2){
-  const k=rest[i],v=rest[i+1];
+  const k=rest[i]!,v=rest[i+1]!;
   need(["--provider","--source","--file"].includes(k)&&v&&!Object.hasOwn(o,k),"FLAG");
   o[k]=v;
  }
