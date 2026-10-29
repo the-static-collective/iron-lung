@@ -92,8 +92,8 @@ export async function circulateTripleTransfer(input:{
     parentStepId:parent,breath,phase,address:addresses[i]!,inputSha256:req.inputSha256,
     sourceSha256:req.sourceSha256,candidateText,candidateSha256:hash(candidateText),
     provider:structuredClone(provider),status:"PROPOSAL_UNVERIFIED" as const,
-    actualAuthority:"NONE" as const,humanKeep:false,evidenceMinted:false,
-    lineageRewritten:false,heartBeat:false};
+    actualAuthority:"NONE" as const,humanKeep:false as const,evidenceMinted:false as const,
+    lineageRewritten:false as const,heartBeat:false as const};
    const step:TransferStep={...core,id:"breath-"+hash(j(core)).slice(0,24)};
    steps.push(step);parent=step.id;previous=candidateText;
   }
