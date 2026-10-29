@@ -1,0 +1,77 @@
+name: IRON LUNG COMPASS-001 strict dyad triad real FLAN
+on:
+  push:
+    branches: [experiment/compass-dyad-003]
+  pull_request:
+    paths:
+      - src/compass.ts
+      - scripts/compass-lab.ts
+      - scripts/triple-transfer.ts
+      - test/compass.test.ts
+      - package.json
+      - .github/workflows/compass.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  fixture:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Existing Iron Lung tests plus dyad strict-format and constitutional tests
+        run: npm run check
+      - name: Original Iron Lung builds equal-budget and 27-microquestion comparison
+        run: |
+          npm run --silent compass-lab -- compare --provider fixture --source fixtures/triple-transfer-input-v1.json > /tmp/compass-fixture-a.json
+          npm run --silent compass-lab -- compare --provider fixture --source fixtures/triple-transfer-input-v1.json > /tmp/compass-fixture-b.json
+          cmp /tmp/compass-fixture-a.json /tmp/compass-fixture-b.json
+          npm run --silent compass-lab -- verify --file /tmp/compass-fixture-a.json
+          node -e 'const x=require("/tmp/compass-fixture-a.json");if(x.requestCounts.original!==9||x.requestCounts.equalBudget!==9||x.requestCounts.microquestions!==27||x.result!=="PROPOSALS_ONLY"||x.dyadTwentySeven.steps.some(s=>s.card.split("\n").some(l=>l.split(/\s+/).length>3)))process.exit(3)'
+      - name: Forged dyad and model outcome are refused
+        run: |
+          cp /tmp/compass-fixture-a.json /tmp/compass-fixture-clean.json
+          node -e 'const fs=require("fs"),p="/tmp/compass-fixture-a.json",x=JSON.parse(fs.readFileSync(p));x.dyadNine.steps[0].card="FACT PROMOTED";fs.writeFileSync(p,JSON.stringify(x))'
+          if npm run --silent compass-lab -- verify --file /tmp/compass-fixture-a.json; then echo "FAKE_PROMPT_ACCEPTED";exit 1;fi
+          cp /tmp/compass-fixture-clean.json /tmp/compass-fixture-a.json
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iron-lung-compass-9-vs-9-vs-27-control-proof
+          path: /tmp/compass-fixture-a.json
+          if-no-files-found: error
+          retention-days: 30
+  real-model:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Install real pinned Google FLAN CPU model requirements
+        run: |
+          python -m pip install 'torch>=2.2,<3' --index-url https://download.pytorch.org/whl/cpu
+          python -m pip install -r model/requirements-triple.txt
+      - name: Original owner runs 45 real nested model transformations
+        run: |
+          npm run --silent compass-lab -- compare --provider flan --source fixtures/triple-transfer-input-v1.json > /tmp/compass-real-flan.json
+          npm run --silent compass-lab -- verify --file /tmp/compass-real-flan.json
+          node -e 'const x=require("/tmp/compass-real-flan.json");if(x.provider.kind!=="flan-t5"||x.dyadNine.steps.length!==9||x.dyadTwentySeven.steps.length!==27||x.baseline.steps.length!==9||x.result!=="PROPOSALS_ONLY")process.exit(4)'
+      - uses: actions/upload-artifact@v4
+        with:
+          name: iron-lung-compass-real-google-flan-nine-paired-and-27-microquestions
+          path: /tmp/compass-real-flan.json
+          if-no-files-found: error
+          retention-days: 30
