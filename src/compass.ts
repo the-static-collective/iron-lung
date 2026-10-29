@@ -29,21 +29,13 @@ export function dyadCard(input:{phase:Phase;breath:number;focus:CompassFocus;
  need(phases.includes(input.phase)&&[...foci,"TRIAD"].includes(input.focus),"PHASE");
  need(Number.isInteger(input.breath)&&input.breath>0&&input.breath<=3,"BREATH");
  need(typeof input.rawText==="string"&&input.rawText.length>0&&input.rawText.length<=2500,"SOURCE_SIZE");
- const intro=[
- ...labels,
- "TRUTH not_verified",
- "AUTHORITY not_granted",
- "EVIDENCE no_new",
- "PHASE "+input.phase.replaceAll("_"," "),
- "FOCUS "+input.focus,
- "BREATH "+input.breath,
- aims[input.phase][input.focus],
- "SOURCE quoted",
- ...pairs(tokens(input.rawText),32),
- "CONTEXT candidate",
- ...(input.previous?pairs(tokens(input.previous),18):["NONE previous"]),
- "REPLY short",
- "REPLY tentative"
+ const stop=new Set(["a","an","the","to","and","with","are","is","of","in","for","would","be","that","this"]);
+ const words=tokens(input.rawText).filter(w=>!stop.has(w.toLowerCase())).slice(0,10);
+ const prior=tokens(input.previous).filter(w=>!stop.has(w.toLowerCase())).slice(0,2);
+ const intro=[...labels,
+  ...pairs(words,10).map(x=>"SOURCE "+x),
+  prior.length?"PRIOR "+prior.join(" "):"PRIOR none",
+  aims[input.phase][input.focus]
  ];
  need(intro.length>=3&&intro.every(line=>{const n=tokens(line).length;return n>=2&&n<=3}),"DYAD_LINES");
  need(intro.join("\n").length<=1100,"CARD_BOUNDS");
