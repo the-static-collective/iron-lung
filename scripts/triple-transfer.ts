@@ -10,7 +10,7 @@ import type {BraidV01} from "../src/model.js";
 const ROOT=resolve(dirname(fileURLToPath(import.meta.url)),"..");
 const MODEL="google/flan-t5-small",REV="14fd6edcfdd71f2ef5b67d4e735fee8bc6d9fd31";
 function args(argv:string[]){
- const a:{provider:"fixture"|"flan";depth:number;verify?:string}={provider:"fixture",depth:3};
+ const a:{provider:"fixture"|"flan";depth:number;verify?:string;source?:string}={provider:"fixture",depth:3};
  if(argv.length%2)throw Error("HOLD_TRIPLE_CLI_FLAGS");
  const seen=new Set<string>();
  for(let i=0;i<argv.length;i+=2){
@@ -20,6 +20,7 @@ function args(argv:string[]){
   if(k==="--provider"){if(v!=="fixture"&&v!=="flan")throw Error("HOLD_TRIPLE_CLI_PROVIDER");a.provider=v;}
   else if(k==="--depth"){if(!["1","2","3"].includes(v))throw Error("HOLD_TRIPLE_CLI_DEPTH");a.depth=Number(v);}
   else if(k==="--verify")a.verify=v;
+  else if(k==="--source")a.source=v;
   else throw Error("HOLD_TRIPLE_CLI_UNKNOWN");
  }
  if(a.verify&&seen.size!==1)throw Error("HOLD_TRIPLE_CLI_VERIFY_ONLY");
@@ -64,13 +65,17 @@ export async function main(argv:string[]){
   return {status:"TRIPLE_COLD_PACKET_VERIFIED",fieldSha256:data.fieldSha256,
    breaths:data.depth,steps:data.steps.length,authority:"NONE"};
  }
- const fixture=JSON.parse(readFileSync(join(ROOT,"fixtures/combinatrix-heart-001.json"),"utf8")) as {braid:BraidV01};
+ const original=JSON.parse(readFileSync(join(ROOT,"fixtures/combinatrix-heart-001.json"),"utf8")) as {braid:BraidV01};
+ const spec=parsed.source?JSON.parse(readFileSync(resolve(parsed.source),"utf8")) as {
+  schema:string;braid:BraidV01;rawText:string;sourceRefs:string[]
+ }:null;
+ if(spec&&spec.schema!=="iron-lung/triple-transfer-input/v1")throw Error("HOLD_TRIPLE_INPUT_SCHEMA");
  const live=parsed.provider==="flan"?flanProvider():null;
  try{
   const field=await circulateTripleTransfer({
-   braid:fixture.braid,depth:parsed.depth,provider:live?.provider??fixtureProvider,
-   rawText:"Iron Lung's origin is represented by a damaged substance and lineage braid; propose possible readings without constituting a repair.",
-   sourceRefs:["iron-lung/HEART-001-original-fixture","iron-lung/PR-3-recursive-T5-design"]
+   braid:spec?.braid??original.braid,depth:parsed.depth,provider:live?.provider??fixtureProvider,
+   rawText:spec?.rawText??"Iron Lung's origin is represented by a damaged substance and lineage braid; propose possible readings without constituting a repair.",
+   sourceRefs:spec?.sourceRefs??["iron-lung/HEART-001-original-fixture","iron-lung/PR-3-recursive-T5-design"]
   });
   inspectTripleField(field);
   return field;
