@@ -44,7 +44,7 @@ test("72 source-owned model requests replay with strictly bounded prompts and no
  assert.equal(r.steps.length,72);
  assert.equal(r.results.length,8);
  assert.equal(inspectContentCompass(r),true);
- assert.equal(r.automaticPromotions,undefined);
+ assert.equal(r.noAutoDecision,true);
  assert.equal(r.humanAuthorization,false);
  assert.ok(r.steps.every(s=>s.authority==="NONE"&&!s.executed));
  assert.equal(r.steps[9]?.parentStepId,null);
