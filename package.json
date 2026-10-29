@@ -9,7 +9,8 @@
     "heart-001": "tsx scripts/combinatrix-heart-001.ts",
     "triple-transfer": "tsx scripts/triple-transfer.ts",
     "compass-lab": "tsx scripts/compass-lab.ts",
-    "contract-compass": "tsx scripts/contract-compass.ts"
+    "contract-compass": "tsx scripts/contract-compass.ts",
+    "content-compass": "tsx scripts/content-compass.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
