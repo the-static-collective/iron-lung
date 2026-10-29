@@ -8,7 +8,7 @@ import {runContractCompass,inspectContractCompass,type ContractTask,type Contrac
  from "../src/contract-compass.js";
 const args=(v:string[])=>{
  const [mode,...rest]=v;
- if(!["compare","verify"].includes(mode)||rest.length%2)throw Error("HOLD_ACTUAL_CLI_USAGE");
+ if(!["compare","verify"].includes(mode??"")||rest.length%2)throw Error("HOLD_ACTUAL_CLI_USAGE");
  const o:Record<string,string>={};
  for(let i=0;i<rest.length;i+=2){
   const k=rest[i]!,value=rest[i+1]!;
