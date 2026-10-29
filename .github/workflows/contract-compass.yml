@@ -1,0 +1,27 @@
+name: Iron Lung COMPASS-002 real source interfaces and second-person A-B
+on:
+  push:
+    branches: [experiment/compass-actual-contracts-004]
+  pull_request:
+    paths:
+      - src/contract-compass.ts
+      - scripts/contract-compass.ts
+      - test/contract-compass.test.ts
+      - package.json
+      - .github/workflows/contract-compass.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  source-owner:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund
+      - name: Original Iron Lung suite and four-arm actual-contract protocol
+        run: npm run check
