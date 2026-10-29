@@ -7,8 +7,7 @@ import {inspectComparison} from "../scripts/compass-lab.js";
 import {createHash} from "node:crypto";
 import type {BraidV01} from "../src/model.js";
 const sha=(s:string)=>createHash("sha256").update(s).digest("hex");
-const source=JSON.parse(readFileSync(new URL("../fixtures/triple-transfer-input-v1.json",import.meta.url),"utf8"))
- as {braid:BraidV01;rawText:string;sourceRefs:string[]};
+const source=JSON.parse(readFileSync(new URL("../fixtures/triple-transfer-input-v1.json",import.meta.url),"utf8")) as {braid:BraidV01;rawText:string;sourceRefs:string[]};
 const initial={braid:source.braid,rawText:source.rawText,sourceRefs:source.sourceRefs,provider:fixtureProvider};
 test("golden compass cards have actual fact idea relation triad and STRICT 2–3 words per line",()=>{
  for(const phase of ["SUBSTANCE","LINEAGE","AUTHORITY_REQUIREMENTS"] as const){
