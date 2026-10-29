@@ -16,7 +16,7 @@ const enc=(x:unknown)=>JSON.stringify(x);
 function need(x:unknown,label:string):asserts x{if(!x)throw Error("HOLD_COMPASS_"+label);}
 const tokens=(text:string)=>text.replace(/[\r\n\t]+/g," ").trim().split(/\s+/u).filter(Boolean);
 const pairs=(words:string[],max=40)=>{const clipped=words.slice(0,max);const out:string[]=[];
- for(let i=0;i<clipped.length;i+=2)out.push(clipped.slice(i,i+2).join(" "));
+ for(let i=0;i<clipped.length;i+=2)out.push((clipped.slice(i,i+2).length===1?"WORD ":"")+clipped.slice(i,i+2).join(" "));
  return out;};
 const labels=["FACT stated","IDEA speculative","RELATION unverified"];
 const aims:Record<Phase,Record<CompassFocus,string>>={
