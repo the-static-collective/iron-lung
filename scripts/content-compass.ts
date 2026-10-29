@@ -4,7 +4,8 @@ import {resolve} from "node:path";
 import {fileURLToPath} from "node:url";
 import {fixtureProvider} from "../src/triple-transfer.js";
 import {flanProvider} from "./triple-transfer.js";
-import {runContentCompass,inspectContentCompass,type GroundedPacket,type ContractTask} from "../src/content-compass.js";
+import {runContentCompass,inspectContentCompass,type GroundedPacket} from "../src/content-compass.js";
+import type {ContractTask} from "../src/contract-compass.js";
 const parse=(args:string[])=>{
  const [mode,...tail]=args;
  if(!["run","verify"].includes(mode)||tail.length%2)throw Error("HOLD_CONTENT_CLI_USAGE");
