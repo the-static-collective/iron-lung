@@ -1,0 +1,43 @@
+{
+  "schema": "iron-lung/triple-transfer-input/v1",
+  "rawText": "A community project wants to connect a verified plan with a creative proof. The source and consent are incomplete. Explore possibilities, preserve ancestry and identify permissions that would be required; no actions are approved.",
+  "sourceRefs": [
+    "fixture:iron-lung-example",
+    "provenance:synthetic-operator-proposal"
+  ],
+  "braid": {
+    "schema": "iron-lung/braid/v0.1",
+    "id": "braid:synthetic-triple-example:B0",
+    "strands": {
+      "substance": {
+        "condition": "strained",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "gap:substance:0",
+            "source:synthetic-idea"
+          ]
+        }
+      },
+      "lineage": {
+        "condition": "broken",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "gap:lineage:0",
+            "source:unverified-provenance"
+          ]
+        }
+      },
+      "authority": {
+        "condition": "unknown",
+        "claim": {
+          "kind": "refs",
+          "refs": [
+            "authority:UNKNOWN:not-granted"
+          ]
+        }
+      }
+    }
+  }
+}
