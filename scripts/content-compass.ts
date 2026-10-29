@@ -8,7 +8,7 @@ import {runContentCompass,inspectContentCompass,type GroundedPacket} from "../sr
 import type {ContractTask} from "../src/contract-compass.js";
 const parse=(args:string[])=>{
  const [mode,...tail]=args;
- if(!["run","verify"].includes(mode)||tail.length%2)throw Error("HOLD_CONTENT_CLI_USAGE");
+ if(!["run","verify"].includes(mode??"")||tail.length%2)throw Error("HOLD_CONTENT_CLI_USAGE");
  const o:Record<string,string>={};
  for(let i=0;i<tail.length;i+=2){const k=tail[i]!,v=tail[i+1]!;
   if(!["--provider","--task","--file"].includes(k)||!v||Object.hasOwn(o,k))throw Error("HOLD_CONTENT_CLI_ARGS");
