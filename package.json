@@ -8,7 +8,8 @@
     "first-breath": "tsx scripts/first-breath.ts",
     "heart-001": "tsx scripts/combinatrix-heart-001.ts",
     "triple-transfer": "tsx scripts/triple-transfer.ts",
-    "compass-lab": "tsx scripts/compass-lab.ts"
+    "compass-lab": "tsx scripts/compass-lab.ts",
+    "contract-compass": "tsx scripts/contract-compass.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
