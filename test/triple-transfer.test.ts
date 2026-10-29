@@ -59,7 +59,7 @@ test("receipt and every parent reference resist falsification",async()=>{
  const f=await make();
  const altered=structuredClone(f);altered.steps[0]!.candidateText="different";
  assert.throws(()=>inspectTripleField(altered),/FIELD_HASH/);
- const forged=structuredClone(f);forged.admittedCandidateId="accepted";
+ const forged=structuredClone(f);(forged as unknown as {admittedCandidateId:string}).admittedCandidateId="accepted";
  assert.throws(()=>inspectTripleField(forged),/LUNG_ONLY/);
  const dropped=structuredClone(f);dropped.steps.pop();
  assert.throws(()=>inspectTripleField(dropped),/FIELD_HASH/);
