@@ -64,3 +64,7 @@ The machine fails closed on depth >3, mismatched gaps/invalid braids, an empty o
 ## Next connector
 
 A separate CANNON side may consume the held nine-step field as an **unverified proposal source**, verify its content addresses and model pin, and submit candidate plans through the existing INSPAND gates. That would not amend the original Iron Lung Heart or grant cross-repo authority.
+
+## Bring your own source
+
+Pass --source fixtures/triple-transfer-input-v1.json to either the fixture or FLAN provider. This JSON contains the original typed braid, rawText, and sourceRefs. You can copy and edit it; required Substance and Lineage gap addresses remain explicit, and unknown Authority is never promoted. For example: npm run --silent triple-transfer -- --provider flan --source fixtures/triple-transfer-input-v1.json --depth 3. Keep private sources local; hosted CI uses only fictional fixtures.
