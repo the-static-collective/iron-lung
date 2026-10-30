@@ -10,7 +10,8 @@
     "triple-transfer": "tsx scripts/triple-transfer.ts",
     "compass-lab": "tsx scripts/compass-lab.ts",
     "contract-compass": "tsx scripts/contract-compass.ts",
-    "content-compass": "tsx scripts/content-compass.ts"
+    "content-compass": "tsx scripts/content-compass.ts",
+    "nt-investigation": "tsx scripts/nt-investigation.ts"
   },
   "devDependencies": {
     "@types/node": "^22.0.0",
