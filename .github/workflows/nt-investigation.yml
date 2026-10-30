@@ -1,0 +1,28 @@
+name: Iron Lung NT-Q-CYCLE-001 original Question Box nine-breath held exploration
+on:
+  push:
+    branches: [experiment/nt-question-cycle-006]
+  pull_request:
+    paths:
+      - src/nt-investigation.ts
+      - scripts/nt-investigation.ts
+      - test/nt-investigation.test.ts
+      - package.json
+      - .github/workflows/nt-investigation.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  origin-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --ignore-scripts --no-audit --no-fund --no-package-lock
+      - name: Original Iron Lung constitutional suite including National Treasure held-question intake
+        run: npm run check
